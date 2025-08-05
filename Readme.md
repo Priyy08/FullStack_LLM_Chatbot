@@ -16,6 +16,10 @@ The application is designed to be scalable, secure, and deployable on modern clo
 -   **Modular & Scalable Architecture**: A clear separation between the frontend (React) and backend (FastAPI) allows for independent development and scaling.
 -   **Cloud-Ready**: Designed for easy deployment with detailed instructions for Vercel (frontend) and Render (backend).
 
+**Note**: If you want to use it live then sign-in first with an valid email-id(not neccesarily an official email-id) or dummy email-id with password and it will open the main page, then wait for 2-3 seconds then click on new chat to start an conversation with chatbot, after you close the tab, you will not required to login back as It will remember you and it will store all of your chat history based on created timestamp and you can access any chats any time as it have the feature of persistent storage and you can always login with your credentails and get your data back anytime, here's the deployed link:
+https://full-stack-llm-chatbot-cgv0jbhsq-priyy08s-projects.vercel.app
+
+
 ## 🛠️ Tech Stack
 
 ### Frontend
@@ -165,3 +169,4 @@ The backend exposes the following RESTful endpoints under the `/api` prefix.
 ---
 
 Thank you for checking out the project!
+
