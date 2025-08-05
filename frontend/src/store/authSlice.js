@@ -13,11 +13,17 @@ export const signUpUser = createAsyncThunk(
     'auth/signUpUser',
     async ({ email, password, displayName }, { rejectWithValue }) => {
         try {
+            // Step 1: Create user in Firebase Auth on the client
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            
+            // Step 2: Update the profile (displayName) in Firebase Auth
             await updateProfile(userCredential.user, { displayName });
-            await api.post('/auth/register', { email, password, displayName });
             return { uid: userCredential.user.uid };
         } catch (error) {
+            // Handle specific Firebase errors more gracefully
+            if (error.code === 'auth/email-already-in-use') {
+                return rejectWithValue('An account with this email already exists.');
+            }
             return rejectWithValue(error.code || error.message);
         }
     }
