@@ -1,0 +1,63 @@
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { loginUser } from '../../store/authSlice';
+import toast from 'react-hot-toast';
+
+const LoginForm = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { status, error } = useSelector((state) => state.auth);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        dispatch(loginUser({ email, password }))
+            .unwrap()
+            .then(() => {
+                toast.success('Logged in successfully!');
+                navigate('/');
+            })
+            .catch((err) => {
+                toast.error(`Login failed: ${err}`);
+            });
+    };
+
+    return (
+        <div className="min-h-screen flex items-center justify-center bg-primary">
+            <div className="bg-secondary p-8 rounded-lg shadow-xl w-full max-w-md">
+                <h2 className="text-2xl font-bold mb-6 text-center text-text-primary">Login</h2>
+                <form onSubmit={handleSubmit}>
+                    <div className="mb-4">
+                        <label className="block text-text-secondary mb-2" htmlFor="email">Email</label>
+                        <input
+                            type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)}
+                            className="w-full p-2 rounded bg-primary text-text-primary border border-gray-600 focus:outline-none focus:border-accent" required
+                        />
+                    </div>
+                    <div className="mb-6">
+                        <label className="block text-text-secondary mb-2" htmlFor="password">Password</label>
+                        <input
+                            type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)}
+                            className="w-full p-2 rounded bg-primary text-text-primary border border-gray-600 focus:outline-none focus:border-accent" required
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        disabled={status === 'loading'}
+                        className="w-full bg-accent hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 disabled:bg-gray-500"
+                    >
+                        {status === 'loading' ? 'Logging in...' : 'Login'}
+                    </button>
+                    {error && status === 'failed' && <p className="text-red-500 text-xs mt-4">{error}</p>}
+                </form>
+                <p className="text-center text-text-secondary mt-4">
+                    Don't have an account? <Link to="/signup" className="text-accent hover:underline">Sign Up</Link>
+                </p>
+            </div>
+        </div>
+    );
+};
+
+export default LoginForm;
